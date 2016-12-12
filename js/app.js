@@ -130,5 +130,15 @@ const DATA = {
     }
   ]
 };
+import React from 'react'
+import ReactDOM from 'react-dom'
 
-document.body.innerHTML = 'WELCOME TO DECLARATIVE UI WORKSHOP!';
+class App extends React.Component {
+  render() {
+	  return <div>Application root component</div>;
+  }
+}
+ReactDOM.render(
+  <App />,
+  document.getElementById('root')
+);

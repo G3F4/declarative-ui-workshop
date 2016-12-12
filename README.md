@@ -19,3 +19,29 @@ Install dependencies and start up:
     $ npm start
 
 ... and check browser http://localhost:30001 :)
+
+## Adding React
+
+In app.js:
+    * import `react` and `react-dom`
+
+        ```js
+        import React from 'react-dom'
+        import ReactDOM from 'react'
+
+    * create application root component
+
+        ```js
+        class App extends React.Component {
+          render() {
+	        return <div>Application root component</div>;
+          }
+        }
+
+    * render component to document
+
+        ```js
+        ReactDOM.render(
+          <App />,
+          document.getElementById('root')
+        );
