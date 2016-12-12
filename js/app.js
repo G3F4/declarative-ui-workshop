@@ -133,11 +133,37 @@ const DATA = {
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-class App extends React.Component {
+class Event extends React.Component {
   render() {
-	  return <div>Application root component</div>;
+    return <div style={{ margin: '10px', padding: '10px', backgroundColor: '#6d77ed', border: 'solid' }}>
+      <h3>Event name</h3>
+      <div>Event description</div>
+    </div>;
   }
 }
+
+class Category extends React.Component {
+  render() {
+    return <div style={{ margin: '10px', padding: '10px', backgroundColor: '#d6611d', border: 'solid', width: '300px' }}>
+      <h2 style={{ textAlign: 'center' }}>Category name</h2>
+      <h4>Category description</h4>
+      <Event />
+      <Event />
+      <Event />
+    </div>;
+  }
+}
+
+class App extends React.Component {
+  render() {
+    return <div style={{ margin: '10px', padding: '10px', display: 'inline-flex', backgroundColor: '#2db712', border: 'solid' }}>
+      <Category />
+      <Category />
+      <Category />
+    </div>;
+  }
+}
+
 ReactDOM.render(
   <App />,
   document.getElementById('root')
