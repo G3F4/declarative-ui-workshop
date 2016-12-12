@@ -118,10 +118,80 @@ In `app.js`:
 4. Change `App` render method to use `props` and maps `categories` from data prop to `Category`'s components.
 
         render() {
-          return <div style={{ margin: '10px', padding: '10px', display: 'inline-flex', backgroundColor: '#2db712', border: 'solid' }}>
+          return <div style={...}>
             {this.props.data.categories.map(category =>
               <Category key={category.id} category={category} />
             )}
           </div>;
         }
 
+
+## Add Relay
+
+1. First, import `react-relay` for `Relay`. Then Create application route, the entry point to your graphql schema.
+
+        import Relay from 'react-relay'
+
+        class AppRoute extends Relay.Route {
+          static queries = {
+            data: () => Relay.QL`query { app }`
+          };
+          static routeName = 'AppRoute';
+        }
+
+2. We create `Relay.Container` by wrapping React component. Define `event` fragment for `Event` component on type `Event` from GraphQL schema.
+
+        Event = Relay.createContainer(Event, {
+          fragments: {
+            event: () => Relay.QL`
+              fragment on Event {
+                name
+                description
+              }
+            `
+          }
+        });
+
+
+3. Wrap `Category` component with `Relay.Container`. Inside create fragment on `Category` type. Within `events` field we define connection. We want to get only first 10 events binded to this category. Every connection has edges which contains node with data with particular type. We can use fragments from others containers to create data connections between containers. Root container doesn't have access to data which was asked by child, and vice-versa.
+
+        Category = Relay.createContainer(Category, {
+          fragments: {
+            category: () => Relay.QL`
+              fragment on Category {
+                name
+                description
+                events(first: 10) {
+                  edges {
+                    node {
+                      id
+                      ${Event.getFragment('event')}
+                    }
+                  }
+                }
+              }
+            `
+          },
+        });
+
+4. Wrap `App` component with `Relay.Container` and get categories field with static arguments and nested `Category` fragment.
+
+        App = Relay.createContainer(App, {
+          fragments: {
+            data: () => Relay.QL`
+              fragment on App {
+                id,
+                categories(names: ["IT", "SPORT", "MUSIC"])  {
+                  id
+                  ${Category.getFragment('category')}
+                }
+              }
+            `
+          }
+        });
+
+5. Do to dev tools and check network tab
+
+## The End
+
+Thank You for participation in workshop. Hope You enjoyed!
